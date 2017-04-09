@@ -80,15 +80,28 @@ export class Playground extends React.Component {
 
     constructor(props) {
         super(props);
-        const components = collectElements(this.props.module);
-        const keys = Object.keys(components || {} );
-        const selectedComponent = keys[0] || null;
+        const components = collectElements(this.props.module);    
+        const selectedComponent = Object.keys(components||{})[0];
         this.state = { foreground: '#000', background: '#FFF', components, selectedComponent };
+    }
+
+    componentDidMount() {
+        //get the hash and use that
+        const hashValue = window.location.hash;
+        if ( hashValue && hashValue.length > 0 ) {
+            const selectedComponent = hashValue.substring(1);
+            const isSelectedInComponents = Object.keys(this.state.components || {}).some( key => key === selectedComponent);
+            if ( isSelectedInComponents ) {
+                this.setState({ selectedComponent });
+            }
+        }
     }
 
     onChangeComponent = ( e ) => {
         const { target } = e;
-        this.setState({ selectedComponent: target.value });
+        this.setState({ selectedComponent: target.value }, () => {
+            window.history.replaceState(null, null, `#${this.state.selectedComponent}`);
+        });
     }
 
     onBackgroundColorChange = (color) => {
@@ -102,26 +115,27 @@ export class Playground extends React.Component {
     }
 
     render() {
-        const { components, selectedComponent } = this.state;
+        const { components = {}, selectedComponent } = this.state;
         const containerStyle = { ...containerDefaultStyle, ...this.props.containerStyle, background: this.state.background, color: this.state.foreground };
+        
         const component = components[selectedComponent];
-
         return (
             <div style={containerStyle}>
                 <ListComponents onChange={this.onChangeComponent} components={this.state.components}/>
                 <div style={colorPickerStyle}>
-                   
+                
                 </div>
                 <div>
-                    { React.createElement(component.component) }
+                    { component ? React.createElement(component.component) : <div>No Component Selected</div> }
                 </div>
             </div>
         );
+        
+        
     }
 }
 
 export default Playground;
-
-//  <ColorPicker {...this.state}
+// <ColorPicker {...this.state}
 //                             onBackgroundColorChange={this.onBackgroundColorChange}
 //                             onForegroundColorChange={this.onForegroundColorChange} />

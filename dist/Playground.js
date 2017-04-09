@@ -111,7 +111,9 @@ var Playground = exports.Playground = function (_React$Component) {
         _this.onChangeComponent = function (e) {
             var target = e.target;
 
-            _this.setState({ selectedComponent: target.value });
+            _this.setState({ selectedComponent: target.value }, function () {
+                window.history.replaceState(null, null, '#' + _this.state.selectedComponent);
+            });
         };
 
         _this.onBackgroundColorChange = function (color) {
@@ -127,31 +129,56 @@ var Playground = exports.Playground = function (_React$Component) {
         };
 
         var components = collectElements(_this.props.module);
-        var keys = Object.keys(components || {});
-        var selectedComponent = keys[0] || null;
+        var selectedComponent = Object.keys(components || {})[0];
         _this.state = { foreground: '#000', background: '#FFF', components: components, selectedComponent: selectedComponent };
         return _this;
     }
 
     _createClass(Playground, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            //get the hash and use that
+            var hashValue = window.location.hash;
+            if (hashValue && hashValue.length > 0) {
+                var selectedComponent = hashValue.substring(1);
+                var isSelectedInComponents = Object.keys(this.state.components || {}).some(function (key) {
+                    return key === selectedComponent;
+                });
+                if (isSelectedInComponents) {
+                    this.setState({ selectedComponent: selectedComponent });
+                }
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _state = this.state,
-                components = _state.components,
+                _state$components = _state.components,
+                components = _state$components === undefined ? {} : _state$components,
                 selectedComponent = _state.selectedComponent;
 
             var containerStyle = _extends({}, containerDefaultStyle, this.props.containerStyle, { background: this.state.background, color: this.state.foreground });
-            var component = components[selectedComponent];
 
+            var component = components[selectedComponent];
             return _react2.default.createElement(
                 'div',
                 { style: containerStyle },
                 _react2.default.createElement(ListComponents, { onChange: this.onChangeComponent, components: this.state.components }),
-                _react2.default.createElement('div', { style: colorPickerStyle }),
+                _react2.default.createElement(
+                    'div',
+                    { style: colorPickerStyle },
+                    _react2.default.createElement(_ColorPicker2.default, _extends({}, this.state, {
+                        onBackgroundColorChange: this.onBackgroundColorChange,
+                        onForegroundColorChange: this.onForegroundColorChange }))
+                ),
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(component.component)
+                    component ? _react2.default.createElement(component.component) : _react2.default.createElement(
+                        'div',
+                        null,
+                        'No Component Selected'
+                    )
                 )
             );
         }
@@ -168,7 +195,3 @@ Playground.defaultProps = {
     containerStyle: {}
 };
 exports.default = Playground;
-
-//  <ColorPicker {...this.state}
-//                             onBackgroundColorChange={this.onBackgroundColorChange}
-//                             onForegroundColorChange={this.onForegroundColorChange} />

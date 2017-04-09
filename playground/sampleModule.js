@@ -11,5 +11,5 @@ export class RCls extends React.Component {
         );
     }
 }
-export const Div = () => <div>Hello World</div>;
+export const Div = () => <div>Hello World5</div>;
 export default Div;

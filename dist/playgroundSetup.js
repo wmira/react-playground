@@ -3,11 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-
-/**
- * 
- * @param {*} entryPath Creates a string representation of the playground
- */
 var createEntry = exports.createEntry = function createEntry(entryPath) {
 
     return "\n        import React from 'react';\n        import ReactDom from 'react-dom';\n        import Playground from 'react-playground-kit';\n        import * as module from '" + entryPath + "';\n\n        ReactDom.render(React.createElement(Playground, { module }), document.getElementById('app'));\n    ";

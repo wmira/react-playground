@@ -1,9 +1,5 @@
 
-/**
- * 
- * @param {*} entryPath Creates a string representation of the playground
- */
-export const createEntry = entryPath => {
+export const createEntry = (entryPath) => {
 
     return `
         import React from 'react';
