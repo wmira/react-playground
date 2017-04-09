@@ -164,13 +164,7 @@ var Playground = exports.Playground = function (_React$Component) {
                 'div',
                 { style: containerStyle },
                 _react2.default.createElement(ListComponents, { onChange: this.onChangeComponent, components: this.state.components }),
-                _react2.default.createElement(
-                    'div',
-                    { style: colorPickerStyle },
-                    _react2.default.createElement(_ColorPicker2.default, _extends({}, this.state, {
-                        onBackgroundColorChange: this.onBackgroundColorChange,
-                        onForegroundColorChange: this.onForegroundColorChange }))
-                ),
+                _react2.default.createElement('div', { style: colorPickerStyle }),
                 _react2.default.createElement(
                     'div',
                     null,
@@ -195,3 +189,6 @@ Playground.defaultProps = {
     containerStyle: {}
 };
 exports.default = Playground;
+// <ColorPicker {...this.state}
+//                             onBackgroundColorChange={this.onBackgroundColorChange}
+//                             onForegroundColorChange={this.onForegroundColorChange} />
