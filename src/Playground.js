@@ -1,5 +1,7 @@
 
 import React from 'react';
+import styled from 'styled-components';
+import { LeftRightSection } from 'react-containers';
 import PropTypes from 'prop-types';
 import ColorPicker from './ColorPicker';
 
@@ -24,6 +26,24 @@ const containerDefaultStyle = {
     width: '100%',
     height: '100%'
 };
+
+const Header = styled.div`
+    background: #333;
+    height: 52px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+`
+const Title = styled.div`
+    padding-left: 8px;
+    font-weight: bold;
+    color: #00d8ff;
+    font-size: 20px;
+    font-family: Arial;
+    line-height: 52px;
+`
 
 const collectElements = module => {
 
@@ -120,15 +140,18 @@ export class Playground extends React.Component {
         
         const component = components[selectedComponent];
         return (
-            <div style={containerStyle}>
-                <ListComponents onChange={this.onChangeComponent} components={this.state.components}/>
-                <div style={colorPickerStyle}>
-                
-                </div>
-                <div>
-                    { component ? React.createElement(component.component) : <div>No Component Selected</div> }
-                </div>
-            </div>
+            <div style={{width: '100%', height: '100%'}}>
+                <Header>
+                    <LeftRightSection>
+                        <Title>React Playground</Title>
+                        <div></div>
+                    </LeftRightSection>
+                    <div>
+                        <ListComponents onChange={this.onChangeComponent} components={this.state.components}/>
+                        { component ? React.createElement(component.component) : <div>No Component Selected</div> }
+                    </div>
+                </Header>
+            </div>      
         );
         
         
@@ -136,6 +159,3 @@ export class Playground extends React.Component {
 }
 
 export default Playground;
-// <ColorPicker {...this.state}
-//                             onBackgroundColorChange={this.onBackgroundColorChange}
-//                             onForegroundColorChange={this.onForegroundColorChange} />
