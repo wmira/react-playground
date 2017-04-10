@@ -9,9 +9,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _templateObject = _taggedTemplateLiteral(['\n    background: #333;\n    height: 52px;\n    position: fixed;\n    top: 0;\n    width: 100%;\n    z-index: 100;\n    box-shadow: 0 0 5px rgba(0,0,0,0.5);\n'], ['\n    background: #333;\n    height: 52px;\n    position: fixed;\n    top: 0;\n    width: 100%;\n    z-index: 100;\n    box-shadow: 0 0 5px rgba(0,0,0,0.5);\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n    padding-left: 8px;\n    font-weight: bold;\n    color: #00d8ff;\n    font-size: 20px;\n    font-family: Arial;\n    line-height: 52px;\n'], ['\n    padding-left: 8px;\n    font-weight: bold;\n    color: #00d8ff;\n    font-size: 20px;\n    font-family: Arial;\n    line-height: 52px;\n']);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _styledComponents = require('styled-components');
+
+var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+var _reactContainers = require('react-containers');
 
 var _propTypes = require('prop-types');
 
@@ -28,6 +37,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 var selectStyle = {
     padding: '6px 8px',
@@ -49,6 +60,9 @@ var containerDefaultStyle = {
     width: '100%',
     height: '100%'
 };
+
+var Header = _styledComponents2.default.div(_templateObject);
+var Title = _styledComponents2.default.div(_templateObject2);
 
 var collectElements = function collectElements(module) {
 
@@ -162,16 +176,29 @@ var Playground = exports.Playground = function (_React$Component) {
             var component = components[selectedComponent];
             return _react2.default.createElement(
                 'div',
-                { style: containerStyle },
-                _react2.default.createElement(ListComponents, { onChange: this.onChangeComponent, components: this.state.components }),
-                _react2.default.createElement('div', { style: colorPickerStyle }),
+                { style: { width: '100%', height: '100%' } },
                 _react2.default.createElement(
-                    'div',
+                    Header,
                     null,
-                    component ? _react2.default.createElement(component.component) : _react2.default.createElement(
+                    _react2.default.createElement(
+                        _reactContainers.LeftRightSection,
+                        null,
+                        _react2.default.createElement(
+                            Title,
+                            null,
+                            'React Playground'
+                        ),
+                        _react2.default.createElement('div', null)
+                    ),
+                    _react2.default.createElement(
                         'div',
                         null,
-                        'No Component Selected'
+                        _react2.default.createElement(ListComponents, { onChange: this.onChangeComponent, components: this.state.components }),
+                        component ? _react2.default.createElement(component.component) : _react2.default.createElement(
+                            'div',
+                            null,
+                            'No Component Selected'
+                        )
                     )
                 )
             );
@@ -189,6 +216,3 @@ Playground.defaultProps = {
     containerStyle: {}
 };
 exports.default = Playground;
-// <ColorPicker {...this.state}
-//                             onBackgroundColorChange={this.onBackgroundColorChange}
-//                             onForegroundColorChange={this.onForegroundColorChange} />
